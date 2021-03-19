@@ -7,7 +7,7 @@ Simple Cassandra/GraphQL example with Actix/Rust.
 ### server
 
 ```bash
-cargo run (or ``cargo watch -x run``)
+HOST=127.0.0.1 PORT=8080 cargo run (or ``HOST=127.0.0.1 PORT=8080 cargo watch -x run``)
 # Started http server: 127.0.0.1:8080
 ```
 
