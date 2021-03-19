@@ -25,9 +25,12 @@ async fn graphql_route(
 }
 
 #[actix_web::main]
-pub async fn run() -> std::io::Result<()> {
+pub async fn run(host: &'static str, port: &'static str) -> std::io::Result<()> {
     env::set_var("RUST_LOG", "info");
     env_logger::init();
+
+    let server_address = format!("{}:{}", host, port);
+    let cors_origin = format!("http://{}", server_address);
 
     let server = HttpServer::new(move || {
         App::new()
@@ -36,7 +39,7 @@ pub async fn run() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .wrap(
                 Cors::default()
-                    .allowed_origin("http://127.0.0.1:8080")
+                    .allowed_origin(&cors_origin)
                     .allowed_methods(vec!["POST", "GET"])
                     .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
                     .allowed_header(header::CONTENT_TYPE)
@@ -51,7 +54,7 @@ pub async fn run() -> std::io::Result<()> {
             .service(web::resource("/playground").route(web::get().to(playground_route)))
             .service(web::resource("/graphiql").route(web::get().to(graphiql_route)))
     });
-    server.bind("127.0.0.1:8080").unwrap().run().await
+    server.bind(server_address).unwrap().run().await
 }
 // now go to http://127.0.0.1:8080/playground or graphiql and execute
 //{  apiVersion,  user(id: 2){id, name}}
