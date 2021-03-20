@@ -18,14 +18,20 @@ HOST=127.0.0.1 PORT=8080 cargo run (or ``HOST=127.0.0.1 PORT=8080 cargo watch -x
 _Query example:_
 ```graphql
 query($id: Int!) {
-  apiVersion
-  
   ping {
     success
     pong
     date
     time
     datetime
+  }
+  
+  info {
+    version
+    remoteIp
+    date
+    time
+    datetime    
   }
   
   user(id: $id) {
@@ -46,13 +52,19 @@ _Result:_
 ```json
 {
   "data": {
-    "apiVersion": "0.1.0",
     "ping": {
       "success": true,
       "pong": "Pong",
-      "date": "2021-03-19",
-      "time": "16:23:16",
-      "datetime": "2021-03-19T16:23:16.598065+00:00"
+      "date": "2021-03-20",
+      "time": "15:25:25",
+      "datetime": "2021-03-20T15:25:25.519969+00:00"
+    },
+    "info": {
+      "version": "0.1.0",
+      "remoteIp": "127.0.0.1:49424",
+      "date": "2021-03-20",
+      "time": "15:25:25",
+      "datetime": "2021-03-20T15:25:25.520111+00:00"
     },
     "user": {
       "id": 1,

@@ -26,6 +26,29 @@ impl Pong {
     }
 }
 
+#[derive(GraphQLObject)]
+///Info.
+pub struct Info {
+    date: NaiveDate,
+    datetime: DateTime<Utc>,
+    remote_ip: String,
+    time: NaiveTime,
+    version: String,
+}
+
+impl Info {
+    pub fn new(version: String, remote_ip: String) -> Info {
+        let datetime = Utc::now();
+        Info {
+            date: datetime.naive_utc().date(),
+            datetime: datetime,
+            remote_ip: remote_ip,
+            time: datetime.time(),
+            version: version,
+        }
+    }
+}
+
 #[derive(Clone, GraphQLObject)]
 ///a user
 pub struct User {

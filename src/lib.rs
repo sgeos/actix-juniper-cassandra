@@ -20,7 +20,8 @@ async fn graphql_route(
     payload: actix_web::web::Payload,
     schema: web::Data<Schema>,
 ) -> Result<HttpResponse, Error> {
-    let context = Context::new();
+    let ip_address = (*req.connection_info()).remote_addr().unwrap_or("Unknown").to_string();
+    let context = Context::new(ip_address);
     graphql_handler(&schema, &context, req, payload).await
 }
 

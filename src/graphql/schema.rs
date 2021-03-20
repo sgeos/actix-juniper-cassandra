@@ -9,11 +9,12 @@ use std::{env};
 pub struct Context {
     ///this could be a context connection
     version: String,
+    ip_address: String
 }
 impl Context {
-    pub fn new() -> Context {
+    pub fn new(ip_address: String) -> Context {
         let version = env!("CARGO_PKG_VERSION").to_string();
-        Context { version: version }
+        Context { version: version, ip_address: ip_address }
     }
 }
 
@@ -24,12 +25,12 @@ impl juniper::Context for Context {}
 pub struct Query;
 #[graphql_object(context = Context)]
 impl Query {
-    fn apiVersion(context: &Context) -> &String {
-        &context.version
-    }
-
     fn ping(_context: &Context) -> FieldResult<Pong> {
         Ok(Pong::new())
+    }
+
+    fn info(context: &Context) -> FieldResult<Info> {
+        Ok(Info::new(context.version.to_string(), context.ip_address.to_string()))
     }
 
     #[graphql(arguments(id(description = "id of the user")))]
